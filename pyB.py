@@ -2,11 +2,12 @@
 
 e = ''
 operation = 'I'
+count_wrong_command, limit_wrong_command = 0, 3
+lst_operations = ('C', 'D', 'S', 'F', 'E')
+
 balance, count_w, withdraw_value = 0, 0, 0
 lst_withdraw_values = []
 limit_w, deposite_value = 500, 1500 
-count_wrong_command, limit_wrong_command = 0, 3
-lst_operations = ('C', 'D', 'S', 'F', 'E')
 
 while operation != 'F':
     operation = input('\n\nOperacoes:\n' 

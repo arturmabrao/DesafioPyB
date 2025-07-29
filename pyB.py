@@ -48,7 +48,4 @@ while operation != 'F':
             except e:
                 print (e)            
 
-
-#    operation = 'F'
-
 print("\nOperacao Finalizada.\nAté a próxima.")

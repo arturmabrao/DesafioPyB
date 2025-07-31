@@ -16,7 +16,7 @@ while operation != 'F':
     'S - Sacar\n' \
     'F - Finalizar\n' \
     'E - Extrato\n' \
-    ' Para sair Qual operacao deseja realizar? ').upper()
+    ' Para sair Qual operacao deseja realizar? ').upper().strip()
     
     if operation not in lst_operations:
         count_wrong_command+=1
@@ -38,7 +38,7 @@ while operation != 'F':
         if count_w > 2:
             print('\nVoce ja realizou 3 saques no dia de hoje')
             continue
-        withdraw_value = float(input('Qual valor deseja sacar? R$'))
+        withdraw_value = float(input('Qual valor deseja sacar? R$').strip().strip())
         if withdraw_value < 0:
             print('\nO valor de um saque deve ser positivo')
             continue
@@ -59,7 +59,7 @@ while operation != 'F':
             except e:
                 print(e)
     elif operation == 'D':
-        deposite_value = float(input('\nQual valor deseja depositar? R$'))
+        deposite_value = float(input('\nQual valor deseja depositar? R$').strip())
         if deposite_value < 0:
             print('\nO valor de um deposito ser positivo')
             continue

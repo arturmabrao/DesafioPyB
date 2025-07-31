@@ -38,7 +38,7 @@ while operation != 'F':
         if count_w > 2:
             print('\nVoce ja realizou 3 saques no dia de hoje')
             continue
-        withdraw_value = float(input('Qual valor deseja sacar? R$').strip().strip())
+        withdraw_value = float(input('Qual valor deseja sacar? R$').strip())
         if withdraw_value < 0:
             print('\nO valor de um saque deve ser positivo')
             continue

@@ -42,9 +42,10 @@ def action_withdraw(*, balance):
         global count_wvithdraw, LIMIT_WITHDRAW, lst_withdraw_values
         if local_balance <= 0:
             print(f'Seu saldo e {local_balance}, nao e possivel sacar.')
+            return local_balance
         if count_wvithdraw > 2:
             print('\nVoce ja realizou 3 saques no dia de hoje')
-            return balance
+            return local_balance
         withdraw_value = input_value('sacar')
         if withdraw_value > local_balance:
             print(f'\nVoce nao pode sacar R${withdraw_value:.2f}, '+
@@ -64,7 +65,7 @@ def action_withdraw(*, balance):
             except e:
                 print(e)
 
-def action_deposit(balance):
+def action_deposit(balance,/):
     local_balance, deposit_value = balance, 0
     deposit_value = input_value('depositar')
 

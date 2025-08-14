@@ -27,15 +27,17 @@ def show_balance():
     print(f'\nValor do seu saldo: R${balance:.2f}')
     return None
 
-def get_bankstatement():
-    global balance, count_wvithdraw, lst_withdraw_values
+def get_bankstatement(balance, *,count_wvithdraw):
+    local_lst_withdraw_values = lst_withdraw_values.copy()
+    local_balance, local_count_wvithdraw = balance, count_wvithdraw
     mesage_complement = ', os valores foram:'
-    formatted_w_values = [f'{w:.2f}' for w in lst_withdraw_values]
-    print(f'\nExtrado: \n- Seu saldo e de R${balance:.2f}'+ 
-          f'\n- Voce relizou {count_wvithdraw} saques no dia de hoje', end='') 
-    print(mesage_complement if count_wvithdraw else '.', end='')
-    print(' R$' if count_wvithdraw else '', end='')
-    print(*formatted_w_values, sep=', R$', end='.')   
+    formatted_w_values = [f'{w:.2f}' for w in local_lst_withdraw_values]
+    print(f'\nExtrado: \n- Seu saldo e de R${local_balance:.2f}'+ 
+          f'\n- Voce relizou {local_count_wvithdraw} saques no dia de hoje', end='') 
+    print(mesage_complement if local_count_wvithdraw else '.', end='')
+    if local_count_wvithdraw != 0:
+        print(' R$' if local_count_wvithdraw else '', end='')
+        print(*formatted_w_values, sep=', R$', end='.')   
 
 def action_withdraw(*, balance):
         local_balance, withdraw_value = balance, 0
@@ -116,6 +118,6 @@ while operation != 'F':
     elif operation == 'D':
         balance = action_deposit(balance)
     elif operation == 'E':
-        get_bankstatement()
+        get_bankstatement(balance, count_wvithdraw=count_wvithdraw)
 
 print('\nOperacao Finalizada. Ate a proxima.')

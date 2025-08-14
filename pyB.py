@@ -37,9 +37,11 @@ def get_bankstatement():
     print(' R$' if count_wvithdraw else '', end='')
     print(*formatted_w_values, sep=', R$', end='.')   
 
-def action_withdraw(balance):
+def action_withdraw(*, balance):
         local_balance, withdraw_value = balance, 0
         global count_wvithdraw, LIMIT_WITHDRAW, lst_withdraw_values
+        if local_balance <= 0:
+            print(f'Seu saldo e {local_balance}, nao e possivel sacar.')
         if count_wvithdraw > 2:
             print('\nVoce ja realizou 3 saques no dia de hoje')
             return balance
@@ -109,7 +111,7 @@ while operation != 'F':
     elif operation == 'C':
         show_balance()
     elif operation == 'S':
-        balance = action_withdraw(balance)
+        balance = action_withdraw(balance= balance)
     elif operation == 'D':
         balance = action_deposit(balance)
     elif operation == 'E':

@@ -79,7 +79,7 @@ class Conta:
         self._saldo = 0
         self._agencia = '001'
         self._numero = numero
-        self._cliente  = Cliente()
+        self._cliente  = cliente #Cliente()
         self._historico = Historico()
     
     @classmethod
@@ -166,3 +166,81 @@ class ContaCorrente(Conta):
             'Agencia: \t{self.agencia}
             'Numero: \t{self.numero}
             'Cliente: \t{self.cliente.nome}'''
+
+def cria_conta(cliente,numero):
+    conta = Conta(numero, cliente)
+    cliente.adicionar_conta(conta)
+    print(f'Conta {numero} criada')
+    return conta
+
+def cria_cliente():
+    nome = input('Nome: ')
+    cpf = input('CPF: ')
+    endereco = input('Endereco: ')
+    data_nascimento = input('Data de Nascimento: ')
+
+    cliente = PessoaFisica(endereco, cpf, nome, data_nascimento)
+    return cliente
+
+
+def  main():
+    clientes, contas = [], []
+    sequencial_conta = 1
+    operacao = 'I'
+    lst_operacoes = ('C', 'D', 'S', 'F', 'E', 'A', 'K')
+    count_wrong_command, limit_wrong_command = 0, 3
+
+    
+    while operacao != 'F':
+        operacao = input('\n\nOperacoes:\n' 
+        'A - Adicionar Cliente\n' \
+        'K - Criar Conta\n' \
+        'C - Consultar saldo\n' \
+        'D - Depositar\n' \
+        'S - Sacar\n' \
+        'E - Extrato\n' \
+        'F - Finalizar\n' \
+        ' Qual operacao deseja realizar? ').upper().strip()
+
+        if operacao not in lst_operacoes:
+            count_wrong_command+=1
+            if count_wrong_command >= limit_wrong_command: 
+                break 
+            else: 
+                continue
+
+        count_wrong_command=0
+
+        if operacao == 'F':
+            break
+        elif operacao == 'A':
+            cliente = cria_cliente()
+            clientes.append(cliente)
+        elif operacao == 'K':
+            count = 1
+            if len(clientes) > 0:
+                for c in clientes: 
+                    print(f'{count}\t{c.nome}') 
+                    count+=1
+                index_cliente = int(input('Digite o numero do cliente ' \
+                'para o qual deseja criar a conta: ').strip())-1
+                conta = cria_conta(clientes[index_cliente], sequencial_conta)
+                contas.append(conta)
+                sequencial_conta=+1
+            else:
+                print('Primeiro cadastre um cliente.')
+
+#        elif operacao == 'C':
+#            show_balance()
+#        elif operacao == 'S':
+#            balance = action_withdraw(balance= balance)
+#        elif operacao == 'D':
+#            balance = action_deposit(balance)
+#        elif operacao == 'E':
+#            get_bankstatement(balance, count_wvithdraw=count_wvithdraw)
+#
+    print(clientes, contas)
+    print('\nOperacao Finalizada. Ate a proxima.')
+
+
+main()

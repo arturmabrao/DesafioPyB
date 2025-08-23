@@ -12,7 +12,7 @@ class Transacao(ABC):
     def registrar(self, conta):
         pass
 
-class Deposito():
+class Deposito:
     def __init__(self, valor):
         self._valor = valor
 
@@ -25,7 +25,7 @@ class Deposito():
         if sucesso_transacao:
             conta.historico.adicionar_transacao(self)
 
-class Saque():
+class Saque:
     def __init__(self, valor):
         self._valor = valor
 
@@ -56,7 +56,7 @@ class PessoaFisica(Cliente):
         self.nome = nome
         self.data_nascimento = data_nascimento
 
-class Historico():
+class Historico:
 
     def __init__(self):
         self._transacoes = []
@@ -182,6 +182,20 @@ def cria_cliente():
     cliente = PessoaFisica(endereco, cpf, nome, data_nascimento)
     return cliente
 
+def seleciona_cliente(clientes):
+    count = 1
+    for c in clientes: 
+        print(f'Id: {count}\tCliente: {c.nome}') 
+        count+=1
+    return int(input('Digite o Id do cliente: ').strip())-1
+
+def seleciona_conta(contas):
+    count = 1
+    for c in contas: 
+        print(f'Id: {count}\t Conta: {c.numero}') 
+        count+=1
+    return int(input('Digite o id da conta buscada: ').strip())-1
+
 
 def  main():
     clientes, contas = [], []
@@ -189,7 +203,6 @@ def  main():
     operacao = 'I'
     lst_operacoes = ('C', 'D', 'S', 'F', 'E', 'A', 'K')
     count_wrong_command, limit_wrong_command = 0, 3
-
     
     while operacao != 'F':
         operacao = input('\n\nOperacoes:\n' 
@@ -217,30 +230,44 @@ def  main():
             cliente = cria_cliente()
             clientes.append(cliente)
         elif operacao == 'K':
-            count = 1
             if len(clientes) > 0:
-                for c in clientes: 
-                    print(f'{count}\t{c.nome}') 
-                    count+=1
-                index_cliente = int(input('Digite o numero do cliente ' \
-                'para o qual deseja criar a conta: ').strip())-1
+                index_cliente = seleciona_cliente(clientes)
                 conta = cria_conta(clientes[index_cliente], sequencial_conta)
-                contas.append(conta)
                 sequencial_conta=+1
+                contas.append(conta)
             else:
                 print('Primeiro cadastre um cliente.')
-
-#        elif operacao == 'C':
-#            show_balance()
+        elif operacao == 'C':
+            if len(clientes) > 0:
+                index_cliente = seleciona_cliente(clientes)
+                cliente_sald = clientes[index_cliente]
+                if len(cliente_sald.contas) > 0:
+                    index_conta = seleciona_conta(cliente_sald.contas)
+                    conta_sald = cliente_sald.contas[index_conta]
+                    print(f'Cliente:\t{cliente.nome}\n'+
+                          f'Conta:\t{conta_sald.numero}\n'+ 
+                          f'Saldo:\t{conta.saldo}')
+        
+        elif operacao == 'D':
+            if len(clientes) > 0:
+                index_cliente = seleciona_cliente(clientes)
+                cliente_depo = clientes[index_cliente]
+                if len(cliente_depo.contas) > 0:
+                    index_conta = seleciona_conta(cliente_depo.contas)
+                    conta_depo = cliente_depo.contas[index_conta]
+                    valor_depo = float(input(('Valor a depositar: ').strip()))
+                    conta_depo.depositar(valor_depo)
+                else:
+                    print('Primeiro cadastre uma conta para este cliente.')                
+            else:
+                print('Primeiro cadastre um cliente.')
 #        elif operacao == 'S':
-#            balance = action_withdraw(balance= balance)
-#        elif operacao == 'D':
-#            balance = action_deposit(balance)
+#            show_balance()                
 #        elif operacao == 'E':
 #            get_bankstatement(balance, count_wvithdraw=count_wvithdraw)
 #
-    print(clientes, contas)
+    for c in contas:
+        print(f'Conta {c.numero} cliente {c.cliente.nome}')
     print('\nOperacao Finalizada. Ate a proxima.')
-
 
 main()

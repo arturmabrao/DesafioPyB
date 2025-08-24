@@ -192,14 +192,13 @@ def seleciona_cliente(clientes):
 def seleciona_conta(contas):
     count = 1
     for c in contas: 
-        print(f'Id: {count}\t Conta: {c.numero}') 
+        print(f'Cliente {c.cliente.nome}\nId: {count}\t Conta: {c.numero}') 
         count+=1
     return int(input('Digite o id da conta buscada: ').strip())-1
 
 
 def  main():
     clientes, contas = [], []
-    sequencial_conta = 1
     operacao = 'I'
     lst_operacoes = ('C', 'D', 'S', 'F', 'E', 'A', 'K')
     count_wrong_command, limit_wrong_command = 0, 3
@@ -232,8 +231,7 @@ def  main():
         elif operacao == 'K':
             if len(clientes) > 0:
                 index_cliente = seleciona_cliente(clientes)
-                conta = cria_conta(clientes[index_cliente], sequencial_conta)
-                sequencial_conta=+1
+                conta = cria_conta(clientes[index_cliente], len(contas)+1)
                 contas.append(conta)
             else:
                 print('Primeiro cadastre um cliente.')
@@ -267,7 +265,7 @@ def  main():
 #            get_bankstatement(balance, count_wvithdraw=count_wvithdraw)
 #
     for c in contas:
-        print(f'Conta {c.numero} cliente {c.cliente.nome}')
+        print(f'Conta {c.numero} cliente {c.cliente.nome} saldo {c.saldo}')
     print('\nOperacao Finalizada. Ate a proxima.')
 
 main()

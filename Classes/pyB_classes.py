@@ -183,19 +183,26 @@ def cria_cliente():
     return cliente
 
 def seleciona_cliente(clientes):
-    count = 1
-    for c in clientes: 
-        print(f'Id: {count}\tCliente: {c.nome}') 
-        count+=1
-    return int(input('Digite o Id do cliente: ').strip())-1
+    if len(clientes) > 0:
+        count = 1
+        for c in clientes: 
+            print(f'Id: {count}\tCliente: {c.nome}') 
+            count+=1
+        return int(input('Digite o Id do cliente: ').strip())-1
+    else:
+        print('Nao existem clientes.\nPrimeiro cadastre um cliente.')
+    return None        
 
 def seleciona_conta(contas):
-    count = 1
-    for c in contas: 
-        print(f'Cliente {c.cliente.nome}\nId: {count}\t Conta: {c.numero}') 
-        count+=1
-    return int(input('Digite o id da conta buscada: ').strip())-1
-
+    if len(contas) > 0:
+        count = 1
+        for c in contas: 
+            print(f'Cliente {c.cliente.nome}\nId: {count}\t Conta: {c.numero}') 
+            count+=1
+        return int(input('Digite o id da conta buscada: ').strip())-1
+    else:
+        print('Primeiro cadastre uma conta para este cliente.')
+        return None
 
 def  main():
     clientes, contas = [], []
@@ -204,7 +211,7 @@ def  main():
     count_wrong_command, limit_wrong_command = 0, 3
     
     while operacao != 'F':
-        operacao = input('\n\nOperacoes:\n' 
+        operacao = input('\nOperacoes:\n' 
         'A - Adicionar Cliente\n' \
         'K - Criar Conta\n' \
         'C - Consultar saldo\n' \
@@ -229,43 +236,31 @@ def  main():
             cliente = cria_cliente()
             clientes.append(cliente)
         elif operacao == 'K':
-            if len(clientes) > 0:
-                index_cliente = seleciona_cliente(clientes)
-                conta = cria_conta(clientes[index_cliente], len(contas)+1)
-                contas.append(conta)
-            else:
-                print('Primeiro cadastre um cliente.')
+            index_cliente = seleciona_cliente(clientes)
+            if index_cliente == None: continue
+            contas.append(cria_conta(clientes[index_cliente], len(contas)+1))
         elif operacao == 'C':
-            if len(clientes) > 0:
-                index_cliente = seleciona_cliente(clientes)
-                cliente_sald = clientes[index_cliente]
-                if len(cliente_sald.contas) > 0:
-                    index_conta = seleciona_conta(cliente_sald.contas)
-                    conta_sald = cliente_sald.contas[index_conta]
-                    print(f'Cliente:\t{cliente.nome}\n'+
-                          f'Conta:\t{conta_sald.numero}\n'+ 
-                          f'Saldo:\t{conta.saldo}')
-        
+            cliente_sald = clientes[seleciona_cliente(clientes)]
+            if cliente_sald == None: continue 
+            conta_sald = cliente_sald.contas[seleciona_conta(cliente_sald.contas)]
+            if conta_sald == None: continue         
+            print(f'\nCliente: {cliente.nome}\n'+
+                  f'Conta:\t{conta_sald.numero}\n'+ 
+                  f'Saldo:\t{conta_sald.saldo:.2f}')
         elif operacao == 'D':
-            if len(clientes) > 0:
-                index_cliente = seleciona_cliente(clientes)
-                cliente_depo = clientes[index_cliente]
-                if len(cliente_depo.contas) > 0:
-                    index_conta = seleciona_conta(cliente_depo.contas)
-                    conta_depo = cliente_depo.contas[index_conta]
-                    valor_depo = float(input(('Valor a depositar: ').strip()))
-                    conta_depo.depositar(valor_depo)
-                else:
-                    print('Primeiro cadastre uma conta para este cliente.')                
-            else:
-                print('Primeiro cadastre um cliente.')
+            cliente_depo = clientes[seleciona_cliente(clientes)]
+            if cliente_depo == None: continue 
+            conta_depo = cliente_depo.contas[seleciona_conta(cliente_depo.contas)]
+            if conta_depo == None: continue
+            valor_depo = float(input(('Valor a depositar:\t').strip()))
+            conta_depo.depositar(valor_depo)
 #        elif operacao == 'S':
 #            show_balance()                
 #        elif operacao == 'E':
 #            get_bankstatement(balance, count_wvithdraw=count_wvithdraw)
 #
     for c in contas:
-        print(f'Conta {c.numero} cliente {c.cliente.nome} saldo {c.saldo}')
+        print(f'CONTA {c.numero} CLIENTE {c.cliente.nome} SALDO {c.saldo}')
     print('\nOperacao Finalizada. Ate a proxima.')
 
 main()

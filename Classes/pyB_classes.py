@@ -35,7 +35,7 @@ class Saque:
     
     def registrar(self, conta):
         sucesso_transacao = conta.sacar(self.valor)
-        if sucesso_transacao:
+        if sucesso_transacao:  
             conta.historico.adicionar_transacao(self)
 
 class Cliente:
@@ -125,6 +125,7 @@ class Conta:
         if valor > 0:
             self._saldo+=valor
             print('\nDeposito efetuado')
+            
             return True      
         else:
             print('\nValor invalido. Saque nao pode ser efetuado')
@@ -144,7 +145,7 @@ class ContaCorrente(Conta):
         )
 
         saldo = self.saldo
-        excedeu_saldo = valor > saldo 
+        excedeu_saldo = valor > saldo
         excedeu_limite = valor > self.limite
         excedeu_saques = numero_saques > self.limite_saques
         
@@ -260,10 +261,14 @@ def  main():
             conta_sq = cliente_sq.contas[seleciona_conta(cliente_sq.contas)]
             if conta_sq == None: continue
             valor_sq = float(input(('Valor do saque:\t').strip()))
-            conta_depo.sacar(valor_sq)
-        #        elif operacao == 'E':
-#            get_bankstatement(balance, count_wvithdraw=count_wvithdraw)
-#
+            conta_sq.sacar(valor_sq)
+        elif operacao == 'E':
+            cliente_extr = clientes[seleciona_cliente(clientes)]
+            if cliente_extr == None: continue 
+            conta_extr = cliente_extr.contas[seleciona_conta(cliente_extr.contas)]
+            if conta_extr == None: continue
+            print(conta_extr.historico.transacaoes)
+            print('ta aqui')
     for c in contas:
         print(f'CONTA {c.numero} CLIENTE {c.cliente.nome} SALDO {c.saldo}')
     print('\nOperacao Finalizada. Ate a proxima.')

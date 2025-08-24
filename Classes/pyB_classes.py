@@ -254,9 +254,14 @@ def  main():
             if conta_depo == None: continue
             valor_depo = float(input(('Valor a depositar:\t').strip()))
             conta_depo.depositar(valor_depo)
-#        elif operacao == 'S':
-#            show_balance()                
-#        elif operacao == 'E':
+        elif operacao == 'S':
+            cliente_sq = clientes[seleciona_cliente(clientes)]
+            if cliente_sq == None: continue 
+            conta_sq = cliente_sq.contas[seleciona_conta(cliente_sq.contas)]
+            if conta_sq == None: continue
+            valor_sq = float(input(('Valor do saque:\t').strip()))
+            conta_depo.sacar(valor_sq)
+        #        elif operacao == 'E':
 #            get_bankstatement(balance, count_wvithdraw=count_wvithdraw)
 #
     for c in contas:
